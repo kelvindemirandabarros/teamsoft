@@ -1,5 +1,5 @@
-const productionEnv = process.env.NODE_ENV === 'production';
-require('dotenv').config({ path: productionEnv ? '.env' : '.env.test' });
+const isProductionEnv = process.env.NODE_ENV === 'production';
+require('dotenv').config({ path: isProductionEnv ? '.env' : '.env.test' });
 
 import mongoose, { Document } from 'mongoose';
 
@@ -18,7 +18,7 @@ const connection: IConnection = {
 
 async function connect() {
   if (connection.isConnected) {
-    console.log('Already connected.');
+    // console.log('Already connected.');
     return;
   }
 
@@ -26,7 +26,7 @@ async function connect() {
     connection.isConnected = mongoose.connections[0].readyState;
 
     if (connection.isConnected === 1) {
-      console.log('Use previous connection.');
+      // console.log('Use previous connection.');
       return;
     }
 
@@ -35,23 +35,26 @@ async function connect() {
 
   let mongodbUri = '';
 
-  if (process.env.MONGODB_URI) {
+  if (process.env.NODE_ENV === 'development' && process.env.MONGODB_URI) {
     mongodbUri = process.env.MONGODB_URI;
+  } else if (process.env.NODE_ENV === 'test' && process.env.MONGODB_URI_TESTS) {
+    mongodbUri = process.env.MONGODB_URI_TESTS;
   } else {
     const fileName =
       process.env.NODE_ENV === 'production' ? '.env' : '.env.test';
-    throw new Error('MONGODB_URI está faltando no arquivo ' + fileName);
+    const varName =
+      process.env.NODE_ENV === 'test' ? 'MONGODB_URI_TESTS' : 'MONGODB_URI';
+    throw new Error(varName + ' está faltando no arquivo ' + fileName);
   }
 
   const db = await mongoose.connect(mongodbUri);
 
-  console.log('New connection.');
   connection.isConnected = db.connections[0].readyState;
 }
 
 async function disconnect() {
   if (connection.isConnected) {
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV !== 'development') {
       await mongoose.disconnect();
 
       connection.isConnected = 0;

@@ -1,5 +1,5 @@
-const productionEnv = process.env.NODE_ENV === 'production';
-require('dotenv').config({ path: productionEnv ? '.env' : '.env.test' });
+const isProductionEnv = process.env.NODE_ENV === 'production';
+require('dotenv').config({ path: isProductionEnv ? '.env' : '.env.test' });
 
 import express from 'express';
 import cors from 'cors';
