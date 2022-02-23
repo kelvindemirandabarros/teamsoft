@@ -2,8 +2,8 @@ import { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import Joi from 'joi';
 
-import Db from '../database';
-import Client from '../models/Client';
+import Db from '../../database';
+import Client from '../../models/Client';
 
 export default {
   async create(request: Request, response: Response) {
@@ -115,7 +115,7 @@ export default {
     if (!isValidId) {
       return response
         .status(400)
-        .json({ message: 'Este ID de Client não é válido.' });
+        .json({ message: 'Este ID de Cliente não é válido.' });
     }
 
     await Db.connect();
@@ -141,7 +141,7 @@ export default {
     if (!isValidId) {
       return response
         .status(400)
-        .json({ message: 'Este ID de Client não é válido.' });
+        .json({ message: 'Este ID de Cliente não é válido.' });
     }
 
     const { cnpj, razaoSocial, nomeContato, telefone } = request.body;
@@ -238,7 +238,7 @@ export default {
     if (!isValidId) {
       return response
         .status(400)
-        .json({ message: 'Este ID de Client não é válido.' });
+        .json({ message: 'Este ID de Cliente não é válido.' });
     }
 
     await Db.connect();
