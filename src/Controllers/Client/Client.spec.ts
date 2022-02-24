@@ -430,7 +430,7 @@ describe('Testes para o model Client.', () => {
     });
   });
 
-  describe('Testes para', () => {
+  describe('Testes para excluir um cliente específico.', () => {
     it('14. Não deve excluir um cliente específico com um ID inválido.', async () => {
       const newClient = {
         cnpj: '05.570.714/0001-59',

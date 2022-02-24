@@ -65,46 +65,62 @@ export default {
       });
     }
 
-    await Db.connect();
+    try {
+      await Db.connect();
 
-    const cnpjAlreadyUsed = await Client.findOne({
-      cnpj,
-    });
+      const cnpjAlreadyUsed = await Client.findOne({
+        cnpj,
+      });
 
-    if (cnpjAlreadyUsed) {
+      if (cnpjAlreadyUsed) {
+        await Db.disconnect();
+
+        return response.status(400).json({
+          message: 'Este CNPJ já foi cadastrado.',
+        });
+      }
+
+      const newClient = new Client({
+        cnpj,
+        razaoSocial,
+        nomeContato,
+        telefone,
+      });
+
+      await newClient.save();
+
       await Db.disconnect();
 
-      return response.status(400).json({
-        message: 'Este CNPJ já foi cadastrado.',
+      return response.status(201).json({
+        message: 'Cliente criado com sucesso.',
+      });
+    } catch (error) {
+      return response.status(500).json({
+        message:
+          'Não foi possível adicionar o Cliente neste momento. Por favor, tente novamente em breve.',
+        errorMessage: error,
       });
     }
-
-    const newClient = new Client({
-      cnpj,
-      razaoSocial,
-      nomeContato,
-      telefone,
-    });
-
-    await newClient.save();
-
-    await Db.disconnect();
-
-    return response.status(201).json({
-      message: 'Cliente criado com sucesso.',
-    });
   },
 
   async read(request: Request, response: Response) {
-    await Db.connect();
+    try {
+      await Db.connect();
 
-    const clients = await Client.find({});
+      const clients = await Client.find({});
 
-    await Db.disconnect();
+      await Db.disconnect();
 
-    return response.json({
-      clients,
-    });
+      return response.json({
+        clients,
+      });
+    } catch (error) {
+      return response.status(500).json({
+        message:
+          'Não foi possível ler os Clientes neste momento. Por favor, tente novamente em breve.',
+        errorMessage: error,
+      });
+    }
   },
 
   async readOne(request: Request, response: Response) {
@@ -118,19 +134,27 @@ export default {
         .json({ message: 'Este ID de Cliente não é válido.' });
     }
 
-    await Db.connect();
+    try {
+      await Db.connect();
 
-    const client = await Client.findById(id).exec();
+      const client = await Client.findById(id).exec();
 
-    await Db.disconnect();
+      await Db.disconnect();
 
-    if (!client) {
-      return response
-        .status(400)
-        .json({ message: 'Este Cliente não foi encontrado.' });
+      if (!client) {
+        return response
+          .status(400)
+          .json({ message: 'Este Cliente não foi encontrado.' });
+      }
+
+      return response.json(client);
+    } catch (error) {
+      return response.status(500).json({
+        message:
+          'Não foi possível ler o Cliente neste momento. Por favor, tente novamente em breve.',
+        errorMessage: error,
+      });
     }
-
-    return response.json(client);
   },
 
   async update(request: Request, response: Response) {
@@ -198,36 +222,46 @@ export default {
       });
     }
 
-    await Db.connect();
+    try {
+      await Db.connect();
 
-    const client = await Client.findById(id).exec();
+      const client = await Client.findById(id).exec();
 
-    if (!client) {
+      if (!client) {
+        await Db.disconnect();
+
+        return response
+          .status(400)
+          .json({ message: 'Este Cliente não foi encontrado.' });
+      }
+
+      if (cnpj) {
+        client.cnpj = cnpj;
+      }
+      if (razaoSocial) {
+        client.razaoSocial = razaoSocial;
+      }
+      if (nomeContato) {
+        client.nomeContato = nomeContato;
+      }
+      if (telefone) {
+        client.telefone = telefone;
+      }
+
+      await client.save();
+
       await Db.disconnect();
 
-      return response
-        .status(400)
-        .json({ message: 'Este Cliente não foi encontrado.' });
+      return response.json({
+        message: 'O Cliente foi atualizado com sucesso.',
+      });
+    } catch (error) {
+      return response.status(500).json({
+        message:
+          'Não foi possível atualizar o Cliente neste momento. Por favor, tente novamente em breve.',
+        errorMessage: error,
+      });
     }
-
-    if (cnpj) {
-      client.cnpj = cnpj;
-    }
-    if (razaoSocial) {
-      client.razaoSocial = razaoSocial;
-    }
-    if (nomeContato) {
-      client.nomeContato = nomeContato;
-    }
-    if (telefone) {
-      client.telefone = telefone;
-    }
-
-    await client.save();
-
-    await Db.disconnect();
-
-    return response.json({ message: 'O Cliente foi atualizado com sucesso.' });
   },
 
   async delete(request: Request, response: Response) {
@@ -241,18 +275,26 @@ export default {
         .json({ message: 'Este ID de Cliente não é válido.' });
     }
 
-    await Db.connect();
+    try {
+      await Db.connect();
 
-    const client = await Client.findByIdAndDelete(id).exec();
+      const client = await Client.findByIdAndDelete(id).exec();
 
-    await Db.disconnect();
+      await Db.disconnect();
 
-    if (!client) {
-      return response
-        .status(400)
-        .json({ message: 'Este Cliente não foi encontrado.' });
+      if (!client) {
+        return response
+          .status(400)
+          .json({ message: 'Este Cliente não foi encontrado.' });
+      }
+
+      return response.json({ message: 'O Cliente foi excluído com sucesso.' });
+    } catch (error) {
+      return response.status(500).json({
+        message:
+          'Não foi possível excluir o Cliente neste momento. Por favor, tente novamente em breve.',
+        errorMessage: error,
+      });
     }
-
-    return response.json({ message: 'O Cliente foi excluído com sucesso.' });
   },
 };
