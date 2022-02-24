@@ -93,6 +93,7 @@ export default {
 
       return response.status(201).json({
         message: 'Cliente criado com sucesso.',
+        client: newClient,
       });
     } catch (error) {
       return response.status(500).json({

@@ -6,6 +6,15 @@ import Client from '../../models/Client';
 import Address from '../../models/Address';
 
 describe('Testes para o model Address.', () => {
+  beforeAll(async () => {
+    await Db.connect();
+
+    await Client.deleteMany({});
+    await Address.deleteMany({});
+
+    await Db.disconnect();
+  });
+
   beforeEach(async () => {
     await Db.connect();
 

@@ -5,6 +5,14 @@ import Db from '../../database';
 import Client from '../../models/Client';
 
 describe('Testes para o model Client.', () => {
+  beforeAll(async () => {
+    await Db.connect();
+
+    await Client.deleteMany({});
+
+    await Db.disconnect();
+  });
+
   beforeEach(async () => {
     await Db.connect();
 
