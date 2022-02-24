@@ -130,6 +130,7 @@ export default {
 
       return response.status(201).json({
         message: 'O Endereço do Cliente foi adicionado com sucesso.',
+        address: newAddress,
       });
     } catch (error) {
       return response.status(500).json({
@@ -259,11 +260,10 @@ export default {
         'bairro',
         'cidade',
         'estado',
-        'estado',
         'cep'
       )
       .messages({
-        'object.missing': `Pelo menos um dos campos 'logradouro', 'numero', 'complemento', 'bairro', 'cidade', 'estado', 'estado' ou 'cep' deve conter uma informação nova.`,
+        'object.missing': `Pelo menos um dos campos 'logradouro', 'numero', 'complemento', 'bairro', 'cidade', 'estado' ou 'cep' deve conter uma informação nova.`,
       });
 
     const { error } = addressSchema.validate(
@@ -285,7 +285,7 @@ export default {
       return response.status(400).json({
         message: 'Não foi possível atualizar o Endereço do Cliente.',
         details: error.details.map((error) => {
-          return { field: error.path[0], error: error.message };
+          return { field: error.path[0] || 'Requisição', error: error.message };
         }),
       });
     }
@@ -294,6 +294,14 @@ export default {
       await Db.connect();
 
       const address = await Address.findById(id);
+
+      if (!address) {
+        await Db.disconnect();
+
+        return response
+          .status(400)
+          .json({ message: 'Este Endereço não foi encontrado.' });
+      }
 
       if (logradouro) {
         address.logradouro = logradouro;
@@ -321,7 +329,7 @@ export default {
 
       await Db.disconnect();
 
-      return response.status(201).json({
+      return response.status(200).json({
         message: 'O Endereço do Cliente foi atualizado com sucesso.',
       });
     } catch (error) {
