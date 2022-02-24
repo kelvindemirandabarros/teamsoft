@@ -1,8 +1,8 @@
 import request from 'supertest';
 
-import app from '../server';
-import Db from '../database';
-import Client from '../models/Client';
+import app from '../../server';
+import Db from '../../database';
+import Client from '../../models/Client';
 
 describe('Testes para o model Client.', () => {
   beforeEach(async () => {
@@ -225,7 +225,7 @@ describe('Testes para o model Client.', () => {
       );
 
       expect(response3.status).toBe(400);
-      expect(response3.body.message).toBe('Este ID de Client não é válido.');
+      expect(response3.body.message).toBe('Este ID de Cliente não é válido.');
     });
 
     it('8. Não deve receber as informações de um cliente específico com um ID não cadastrado.', async () => {
@@ -322,7 +322,7 @@ describe('Testes para o model Client.', () => {
         .send(infoToUpdate);
 
       expect(response3.status).toBe(400);
-      expect(response3.body.message).toBe('Este ID de Client não é válido.');
+      expect(response3.body.message).toBe('Este ID de Cliente não é válido.');
     });
 
     it('11. Não deve atualizar um Cliente sem nenhum campo a ser atualizado.', async () => {
@@ -456,7 +456,7 @@ describe('Testes para o model Client.', () => {
       );
 
       expect(response3.status).toBe(400);
-      expect(response3.body.message).toBe('Este ID de Client não é válido.');
+      expect(response3.body.message).toBe('Este ID de Cliente não é válido.');
     });
 
     it('15. Não deve excluir um cliente específico com um ID não cadastrado.', async () => {
