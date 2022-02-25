@@ -32,6 +32,6 @@ Para rodar os testes, use o comando:
 yarn test
 ```
 
-# Rotas
+## Rotas
 
 Para ver as rotas da aplicação com o servidor rodando acesse [Rotas](http://localhost:3000/doc).
