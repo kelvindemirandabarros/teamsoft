@@ -34,4 +34,4 @@ yarn test
 
 ## Rotas
 
-Para ver as rotas da aplicação com o servidor rodando acesse [Rotas](http://localhost:3000/doc).
+Para ver as rotas da aplicação com o servidor rodando acesse [http://localhost:3000/doc](http://localhost:3000/doc).
