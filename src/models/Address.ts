@@ -2,9 +2,6 @@ import mongoose, { Schema } from 'mongoose';
 
 const addressSchema = new mongoose.Schema(
   {
-    _id: {
-      type: Schema.Types.ObjectId,
-    },
     clientId: {
       type: Schema.Types.ObjectId,
       required: true,

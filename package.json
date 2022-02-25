@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "dev:server": "set NODE_ENV=development&& ts-node-dev --inspect --ignore-watch node_modules src/app.ts",
+    "dev": "set NODE_ENV=development&& ts-node-dev --inspect --ignore-watch node_modules src/app.ts",
     "test": "jest -i"
   },
   "dependencies": {

@@ -4,6 +4,7 @@ import Joi from 'joi';
 
 import Db from '../../database';
 import Client from '../../models/Client';
+import Address from '../../models/Address';
 
 export default {
   async create(request: Request, response: Response) {
@@ -307,6 +308,11 @@ export default {
       await Db.connect();
 
       const client = await Client.findByIdAndDelete(id).exec();
+
+      const addresses = await Address.find({ clientId: id });
+      if (addresses) {
+        await Address.deleteMany({ clientId: id });
+      }
 
       await Db.disconnect();
 

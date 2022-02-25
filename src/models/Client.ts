@@ -2,9 +2,6 @@ import mongoose, { Schema } from 'mongoose';
 
 const clientSchema = new mongoose.Schema(
   {
-    _id: {
-      type: Schema.Types.ObjectId,
-    },
     cnpj: {
       type: String,
       required: true,
