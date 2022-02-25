@@ -1,10 +1,14 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 const addressSchema = new mongoose.Schema(
   {
+    _id: {
+      type: Schema.Types.ObjectId,
+    },
     clientId: {
-      type: String,
+      type: Schema.Types.ObjectId,
       required: true,
+      ref: 'Client',
     },
     logradouro: {
       type: String,

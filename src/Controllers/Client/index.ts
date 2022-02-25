@@ -108,7 +108,16 @@ export default {
     try {
       await Db.connect();
 
-      const clients = await Client.find({});
+      const clients = await Client.aggregate([
+        {
+          $lookup: {
+            from: 'addresses',
+            localField: '_id',
+            foreignField: 'clientId',
+            as: 'addresses',
+          },
+        },
+      ]);
 
       await Db.disconnect();
 
@@ -138,15 +147,33 @@ export default {
     try {
       await Db.connect();
 
-      const client = await Client.findById(id).exec();
+      const clients = await Client.aggregate([
+        {
+          $lookup: {
+            from: 'addresses',
+            localField: '_id',
+            foreignField: 'clientId',
+            as: 'addresses',
+          },
+        },
+      ]);
 
-      await Db.disconnect();
+      const client = clients.find((client) => {
+        return client._id.toString() === id;
+      });
+
+      // const client = await Client.findById(id);
+      // await client.populate('addresses');
 
       if (!client) {
+        await Db.disconnect();
+
         return response
           .status(400)
           .json({ message: 'Este Cliente não foi encontrado.' });
       }
+
+      await Db.disconnect();
 
       return response.json(client);
     } catch (error) {

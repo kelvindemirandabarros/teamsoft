@@ -1,7 +1,10 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 const clientSchema = new mongoose.Schema(
   {
+    _id: {
+      type: Schema.Types.ObjectId,
+    },
     cnpj: {
       type: String,
       required: true,
@@ -18,6 +21,12 @@ const clientSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    addresses: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Address',
+      },
+    ],
   },
   {
     timestamps: true,
