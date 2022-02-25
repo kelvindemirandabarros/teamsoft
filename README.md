@@ -23,3 +23,11 @@ cd teamsoft
 yarn
 yarn dev
 ```
+
+## Testes automatizados
+
+Para rodar os testes, use o comando:
+
+```sh
+yarn test
+```
