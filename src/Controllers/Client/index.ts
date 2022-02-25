@@ -8,6 +8,9 @@ import Address from '../../models/Address';
 
 export default {
   async create(request: Request, response: Response) {
+    // #swagger.tags = ['Client']
+    // #swagger.description = 'Endpoint para criar um Cliente.'
+
     const { cnpj, razaoSocial, nomeContato, telefone } = request.body;
 
     const minChar = 2;
@@ -106,6 +109,9 @@ export default {
   },
 
   async read(request: Request, response: Response) {
+    // #swagger.tags = ['Client']
+    // #swagger.description = 'Endpoint para buscar todos os Clientes, cada um com seus Endereços.'
+
     try {
       await Db.connect();
 
@@ -135,6 +141,9 @@ export default {
   },
 
   async readOne(request: Request, response: Response) {
+    // #swagger.tags = ['Client']
+    // #swagger.description = 'Endpoint para buscar um Cliente específico, juntamente com seus Endereços, através do ID.'
+
     const { id } = request.params;
 
     const isValidId = mongoose.isValidObjectId(id);
@@ -187,6 +196,9 @@ export default {
   },
 
   async update(request: Request, response: Response) {
+    // #swagger.tags = ['Client']
+    // #swagger.description = 'Endpoint para atualizar um Cliente específico com o ID.'
+
     const { id } = request.params;
 
     const isValidId = mongoose.isValidObjectId(id);
@@ -294,6 +306,9 @@ export default {
   },
 
   async delete(request: Request, response: Response) {
+    // #swagger.tags = ['Client']
+    // #swagger.description = 'Endpoint para excluir um Cliente específico com o ID, e seus endereços.'
+
     const { id } = request.params;
 
     const isValidId = mongoose.isValidObjectId(id);

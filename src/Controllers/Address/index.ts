@@ -8,6 +8,9 @@ import Address from '../../models/Address';
 
 export default {
   async create(request: Request, response: Response) {
+    // #swagger.tags = ['Address']
+    // #swagger.description = 'Endpoint para adicionar um Endereço a um Cliente.'
+
     const { clientId } = request.body;
 
     const isValidId = mongoose.isValidObjectId(clientId);
@@ -142,6 +145,9 @@ export default {
   },
 
   async read(request: Request, response: Response) {
+    // #swagger.tags = ['Address']
+    // #swagger.description = 'Endpoint para buscar todos os Endereços.'
+
     try {
       await Db.connect();
 
@@ -162,6 +168,9 @@ export default {
   },
 
   async readOne(request: Request, response: Response) {
+    // #swagger.tags = ['Address']
+    // #swagger.description = 'Endpoint para buscar um Endereço específico com o ID.'
+
     const { id } = request.params;
 
     const isValidId = mongoose.isValidObjectId(id);
@@ -196,6 +205,9 @@ export default {
   },
 
   async update(request: Request, response: Response) {
+    // #swagger.tags = ['Address']
+    // #swagger.description = 'Endpoint para atualizar um Endereço específico com o ID.'
+
     const { id } = request.params;
 
     const isValidId = mongoose.isValidObjectId(id);
@@ -342,6 +354,9 @@ export default {
   },
 
   async delete(request: Request, response: Response) {
+    // #swagger.tags = ['Address']
+    // #swagger.description = 'Endpoint para excluir um Endereço específico com o ID.'
+
     const { id } = request.params;
 
     const isValidId = mongoose.isValidObjectId(id);
