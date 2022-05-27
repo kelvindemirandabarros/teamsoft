@@ -1,5 +1,7 @@
 # Teamsoft - Projeto de backend com Node.js
 
+## As instruções de criação do projeto estão no arquivo Project Instructions.md
+
 ## Requisitos do projeto:
 
 - Ter o Node.js instalado no seu computador.
